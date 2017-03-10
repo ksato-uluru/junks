@@ -1,0 +1,54 @@
+---
+# vars file for php7
+src_dir: /usr/src
+php_version: 7.1.2
+src_sha256sum: d815a0c39fd57bab1434a77ff0610fb507c22f790c66cd6f26e27030c4b3e971
+php_dir: /usr/local/php
+configure_options:
+  - --disable-cgi
+  - --enable-exif
+  - --enable-ftp
+  - --enable-intl
+  - --enable-mbstring
+  - --enable-mysqlnd
+  - --enable-zip
+  - --with-apxs2
+  - --with-config-file-path=/usr/local/etc/php
+  - --with-config-file-scan-dir=/usr/local/etc/php/conf.d
+  - --with-curl
+  - --with-gd
+  - --with-libedit
+  - --with-mcrypt
+  - --with-mysqli
+  - --with-openssl
+  - --with-pdo-mysql
+  - --with-zlib
+  
+dependencies:
+  - autoconf
+  - automake
+  - bison
+  - bzip2-devel
+  - curl-devel
+  - expat-devel
+  - gcc
+  - gcc-c++
+  - gettext-devel
+  - giflib-devel
+  - httpd
+  - httpd-devel
+  - libedit-devel
+  - libicu-devel
+  - libjpeg-turbo-devel
+  - libmcrypt-devel
+  - libpng-devel
+  - libtidy-devel
+  - libxml2-devel
+  - libxslt-devel
+  - make
+  - openssl-devel
+  - re2c
+  - readline-devel
+  - tar
+  - xz
+  - zlib-devel

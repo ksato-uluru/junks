@@ -1,0 +1,6 @@
+---
+- hosts: all
+  user: docker
+  become: yes
+  roles:
+    - php7
