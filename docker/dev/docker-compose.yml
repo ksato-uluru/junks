@@ -1,0 +1,42 @@
+---
+
+mysql:
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: 'xxxx'
+  ports:
+    - '13306:3306'
+  volumes_from:
+    - volume1
+  net: dev_nw
+
+volume1:
+    build: volume
+
+ruby:
+  build: ruby
+  volumes_from:
+    - volume1
+  links:
+    - mysql
+  net: dev_nw
+
+python:
+  build: python
+  volumes_from:
+    - volume1
+  links:
+    - mysql
+  net: dev_nw
+
+java:
+  build: java8
+  volumes_from:
+    - volume1
+  links:
+    - mysql
+  net: dev_nw
+  ports:
+    - '10122:22'
+    - '19200:9200'
+

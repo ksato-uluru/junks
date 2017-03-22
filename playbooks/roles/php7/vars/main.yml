@@ -2,8 +2,8 @@
 # vars file for php7
 src_dir: /usr/src
 php_version: 7.1.2
-src_sha256sum: d815a0c39fd57bab1434a77ff0610fb507c22f790c66cd6f26e27030c4b3e971
-php_dir: /usr/local/php
+src_sha256sum: "sha256:d815a0c39fd57bab1434a77ff0610fb507c22f790c66cd6f26e27030c4b3e971"
+php_path: /usr/local/bin/php
 configure_options:
   - --disable-cgi
   - --enable-exif
@@ -52,3 +52,8 @@ dependencies:
   - tar
   - xz
   - zlib-devel
+
+composer_path: /usr/local/bin/composer
+composer_tmp_path: /tmp/composer-intaller.php
+composer_checksum: sha384:669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410
+composer_url: https://getcomposer.org/installer

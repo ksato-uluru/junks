@@ -1,7 +1,7 @@
 ---
 # tasks file for php7
 
-- stat: path={{ php_dir }}
+- stat: path={{ php_path }}
   register: php
 
 - stat: path="{{ src_dir }}/php-{{ php_version }}.tar.xz"
@@ -10,21 +10,29 @@
 - stat: path={{ src_dir }}/php-{{ php_version }}
   register: php_source_dir
 
+- stat: path={{ composer_tmp_path }}
+  register: composer_installer
+
+- stat: path={{ composer_path }}
+  register: composer
+  
 - name: install dependencies
   yum: name={{ item }} state=present
   with_items: "{{ dependencies }}"
-  
-- name: download source
+
+
+- name: download php source
   get_url:
     url=http://php.net/get/php-{{ php_version }}.tar.xz/from/this/mirror
     dest={{ src_dir }}/php-{{ php_version }}.tar.xz
-    sha256sum={{ src_sha256sum }}
+    checksum={{ src_sha256sum }}
   when: not php_source.stat.exists
 
 - name: extract php source
   unarchive:
     src={{ src_dir }}/php-{{ php_version }}.tar.xz
     dest={{ src_dir }}
+    copy=no
   when: not php_source_dir.stat.exists
 
 - name: configure php
@@ -36,9 +44,24 @@
     LDFLAGS: '-Wl,-O1 -Wl,--hash-style=both -pie'
   when: not php.stat.exists
   
-- name: build and install
+- name: build and install php
   shell: make clean && make install chdir={{ src_dir }}/php-{{ php_version }}
   when: not php.stat.exists
 
 - name: create config directories
   file: path=/usr/local/etc/php/conf.d state=directory owner=root group=root mode=0755
+
+- name: get composer installer
+  get_url: 
+    url={{ composer_url }}
+    dest={{ composer_tmp_path }}
+    checksum="{{ composer_checksum }}"
+  when: not composer_installer.stat.exists
+
+- name: install composer
+  shell: >
+    {{ php_path }} {{ composer_tmp_path }} &&
+    ln -s {{ composer_path }}.phar {{ composer_path }} &&
+    rm -f {{ composer_tmp_path }}
+    chdir=/usr/local/bin
+  when: not composer.stat.exists

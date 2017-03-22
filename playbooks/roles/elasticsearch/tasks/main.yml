@@ -1,0 +1,36 @@
+---
+# tasks file for elasticsearch
+
+- stat:
+    path: /tmp/elasticsearch-5.2.2.tar.gz
+  register: tar_file
+
+- stat:
+    path: /opt/elasticsearch-5.2.2
+  register: target_dir
+
+- name: download
+  get_url:
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.2.2.tar.gz
+    dest: /tmp/
+  when: not tar_file.stat.exists
+
+- name: extract
+  unarchive:
+    src: /tmp/elasticsearch-5.2.2.tar.gz
+    dest: /opt/
+    copy: no
+  when: not target_dir.stat.exists
+
+- name: create symlink
+  file:
+    src: /opt/elasticsearch-5.2.2
+    dest: /opt/elasticsearch
+    state: link
+
+- name: set permission
+  file:
+    path: /opt/elasticsearch-5.2.2
+    owner: docker
+    group: docker
+    recurse: yes
