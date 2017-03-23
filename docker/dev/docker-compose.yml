@@ -40,3 +40,10 @@ java:
     - '10122:22'
     - '19200:9200'
 
+emacs:
+  image: debian:jessie
+  volumes_from:
+    - volume1
+  net: dev_nw
+  security_opt:
+    - seccomp:unconfined
